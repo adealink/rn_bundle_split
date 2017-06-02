@@ -47,6 +47,7 @@ bundler.bundle = (config) => {
     let tmpBaseFile = injectBllModuleToBase(config);
 
     let bundlePath = path.resolve(bundleDir, 'index.bundle');
+    fileUtil.createFilePath(bundleDir);
 
     //构建react-native打bundle命令
     let cmd = 'react-native bundle';

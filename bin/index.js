@@ -71,16 +71,3 @@ bundler.bundle(config)
         console.log(err);
     })
     .done();
-
-// const parse = (filename) => {
-//     const codePathDir = path.resolve(process.cwd(), 'bin');
-//     const codePath = path.join(codePathDir, filename);
-//     const code = fs.readFileSync(codePath, 'utf-8');
-//     const codeAST = babylon.parse(code, {
-//         sourceType: 'script',
-//         plugins: ['jsx', 'flow']
-//     });
-//     console.log("parse:codeAST:" + codeAST);
-// };
-//
-// parse('test.js');
