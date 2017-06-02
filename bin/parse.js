@@ -50,32 +50,6 @@ parser.splitBundle = (code, config) => {
 };
 
 /**
- * 生成bundles
- */
-const genBundles = (outputDir) => {
-    bundles.forEach(subBundle => {
-        console.log('----------- Split ' + subBundle.name + '--------------Start');
-        //处理 code
-        const code = subBundle.codes.join(MODULE_SPLITER);//将所有拆入相同module bundle的代码生成一份代码，打入同一bundle
-        const subBundlePath = path.resolve(outputDir, subBundle.name);
-        fileUtil.createFilePath(subBundlePath);
-        const codePath = path.resolve(subBundlePath, 'index.bundle');
-        fs.writeFileSync(codePath, code);
-        console.log('[Code] Write code to ' + codePath);
-        if (subBundle.assetRenames) {
-            //处理 asset
-            subBundle.assetRenames.forEach(item => {
-                const assetNewDir = path.dirname(item.newPath);
-                fileUtil.createFilePath(assetNewDir);
-                console.log('[Resource] Move resource ' + item.originPath + ' to ' + item.newPath);
-                fs.createReadStream(item.originPath).pipe(fs.createWriteStream(item.newPath));//移动 资产 到新的bundle路径
-            });
-        }
-        console.log('----------- Split ' + subBundle.name + '--------------End');
-    });
-};
-
-/**
  * 解析AST
  * @param bundleAST
  */
@@ -424,8 +398,17 @@ const getAssetRenames = (asset, bundle) => {
                 });
             }
         )
+    } else if (globalConfig.platform === 'ios') {
+        assetUtil.getScaledAssetPath(asset).forEach(
+            (relativePath) => {
+                assetRenames.push({
+                    originPath: path.resolve(globalConfig.bundleDir, relativePath),
+                    relativePath: relativePath,
+                    newPath: path.resolve(globalConfig.outputDir, bundle, relativePath)
+                });
+            }
+        )
     }
-
     return assetRenames;
 };
 
@@ -512,6 +495,32 @@ const splitNonBaseModules = () => {
         name: bundleName,
         codes,
         assetRenames
+    });
+};
+
+/**
+ * 生成bundles
+ */
+const genBundles = (outputDir) => {
+    bundles.forEach(subBundle => {
+        console.log('----------- Split ' + subBundle.name + '--------------Start');
+        //处理 code
+        const code = subBundle.codes.join(MODULE_SPLITER);//将所有拆入相同module bundle的代码生成一份代码，打入同一bundle
+        const subBundlePath = path.resolve(outputDir, subBundle.name);
+        fileUtil.createFilePath(subBundlePath);
+        const codePath = path.resolve(subBundlePath, 'index.bundle');
+        fs.writeFileSync(codePath, code);
+        console.log('[Code] Write code to ' + codePath);
+        if (subBundle.assetRenames) {
+            //处理 asset
+            subBundle.assetRenames.forEach(item => {
+                const assetNewDir = path.dirname(item.newPath);
+                fileUtil.createFilePath(assetNewDir);
+                console.log('[Resource] Move resource ' + item.originPath + ' to ' + item.newPath);
+                fs.createReadStream(item.originPath).pipe(fs.createWriteStream(item.newPath));//移动 资产 到新的bundle路径
+            });
+        }
+        console.log('----------- Split ' + subBundle.name + '--------------End');
     });
 };
 

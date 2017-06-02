@@ -5,6 +5,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 
 let util = {};
 
@@ -21,6 +22,7 @@ util.isFileExists = (filePath) => {
  */
 util.createFilePath = (filePath) => {
     if (!util.isFileExists(filePath)) {
+        util.createFilePath(path.dirname(filePath));//递归创建父目录
         fs.mkdirSync(filePath);
     }
 };

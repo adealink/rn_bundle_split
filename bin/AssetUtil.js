@@ -7,7 +7,20 @@
 let util = {};
 
 /**
- * 获取Asset在drawable文件夹中的路径
+ * 针对ios的Asset路径处理，Returns a path like 'assets/AwesomeModule/icon@2x.png'
+ */
+util.getScaledAssetPath = (asset) => {
+    const paths = [];
+    asset.scales.forEach(scale => {
+        const scaleSuffix = scale === 1 ? '' : '@' + scale + 'x';
+        const assetDir = getBasePath(asset);
+        paths.push(assetDir + '/' + asset.name + scaleSuffix + '.' + asset.type);
+    });
+    return paths;
+};
+
+/**
+ * 针对Android的Asset路径处理，获取Asset在drawable文件夹中的路径
  * @param asset
  * @returns {Array}
  */
