@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -58,16 +59,19 @@ public abstract class BaseSubBundleActivity extends Activity {
             default:
                 if (!manager.hasStartedCreatingInitialContext()) {
                     manager.createReactContextInBackground();
+                    Log.d("BaseSubBundleActivity", "createReactContextInBackground");
                 }
                 manager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
                     @Override
                     public void onReactContextInitialized(ReactContext reactContext) {
+                        Utils.moveResume(getReactNativeHost().getReactInstanceManager(), true);
                         loadScriptAsync();
                     }
                 });
                 break;
             case RESUMED:
                 loadScriptAsync();
+                Log.d("BaseSubBundleActivity", "LifecycleState:RESUMED");
                 break;
         }
     }

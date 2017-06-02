@@ -47,4 +47,5 @@ public class MainApplication extends Application implements ReactApplication {
         FLog.setMinimumLoggingLevel(FLog.VERBOSE);
         SoLoader.init(this, /* native exopackage */ false);
     }
+
 }

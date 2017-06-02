@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.example.base.RNManager;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -18,14 +19,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ReactInstanceManager manager = getReactNativeHost().getReactInstanceManager();
-        createContext(manager);
-        findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createContext(manager);
-            }
-        });
+//        final ReactInstanceManager manager = getReactNativeHost().getReactInstanceManager();
+//        createContext(manager);
+//        findViewById(R.id.load).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createContext(manager);
+//            }
+//        });
+
+        RNManager.getsInstance().setContext(this.getApplication());
+        RNManager.getsInstance().initReactInstanceManager();
 
         findViewById(R.id.sample_a).setOnClickListener(new View.OnClickListener() {
             @Override

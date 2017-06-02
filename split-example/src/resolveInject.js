@@ -21,7 +21,9 @@ const ourAsset = (resolver) => {
     }
     if (Platform.OS === 'android') {
         //android平台 根据拆分bundle情况，自定义Asset加载
-        return getCustomSourceTransformer(resolver);
+        return resolver.isLoadedFromFileSystem() ?
+            resolver.drawableFolderInBundle() :
+            getCustomSourceTransformer(resolver);
     } else {
         return resolver.scaledAssetPathInBundle();
     }

@@ -19,7 +19,7 @@ commander
     .description('Split Bundle')
     .option('-o, --output <path>', 'Path to output bundle.')
     .option('-c, --config <path>', 'Config file for bundle-split.')
-    .option('--platform', 'Specify platform. ', 'android')
+    .option('--platform <Platform>', 'Specify platform. ', 'android')
     .option('--dev [boolean]', 'Generate dev module.')
     .parse(process.argv);
 

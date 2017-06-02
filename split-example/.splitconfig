@@ -7,10 +7,10 @@
     ]
   },
   "custom": [{
-    "name": "sample_a",
+    "name": "SampleA",
     "index": "./src/components/packagea/SampleA.js"
   }, {
-    "name": "sample_b",
+    "name": "SampleB",
     "index": "./src/components/packageb/SampleB.js"
   }]
 }
