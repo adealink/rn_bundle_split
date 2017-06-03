@@ -20,8 +20,9 @@ import android.support.annotation.Nullable;
 
 import com.example.base.RNManager;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 
-public class SampleBActivity extends Activity {
+public class SampleBActivity extends Activity implements DefaultHardwareBackBtnHandler {
 
     private ReactRootView mReactRootView;
 
@@ -34,9 +35,27 @@ public class SampleBActivity extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        RNManager.getsInstance().getReactInstanceManager().onHostPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        RNManager.getsInstance().getReactInstanceManager().onHostResume(this, this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         RNManager.getsInstance().detachRootView(mReactRootView);
+        RNManager.getsInstance().getReactInstanceManager().onHostDestroy(this);
+    }
+
+    @Override
+    public void invokeDefaultOnBackPressed() {
+
     }
 
 }
